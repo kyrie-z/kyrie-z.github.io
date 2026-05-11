@@ -1,0 +1,512 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "zh-CN" }}">
+
+  {%- include head.html -%}
+
+  <body class="docs-layout">
+
+    {%- include header.html -%}
+
+    <div class="docs-container">
+      <aside class="docs-sidebar">
+        <div class="docs-sidebar-inner">
+          <nav class="docs-nav">
+            {%- assign docs = site.posts | where: "categories", "tutorial" | sort: "date" -%}
+
+            {%- for section in site.nav_menu -%}
+            <div class="nav-section">
+              <h3 class="nav-section-title">
+                <svg class="section-toggle" viewBox="0 0 24 24" width="14" height="14">
+                  <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                </svg>
+                <span>{{ section.name }}</span>
+              </h3>
+
+              {%- if section.submenus -%}
+                {%- for submenu in section.submenus -%}
+                <div class="nav-submenu">
+                  <h4 class="nav-submenu-title">
+                    <svg class="section-toggle" viewBox="0 0 24 24" width="12" height="12">
+                      <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                    </svg>
+                    <span>{{ submenu.name }}</span>
+                  </h4>
+                  <ul class="nav-section-list">
+                    {%- for item in submenu.items -%}
+                      {%- for doc in docs -%}
+                        {%- if doc.slug == item -%}
+                        <li>
+                          <a href="{{ doc.url | relative_url }}" class="{% if page.slug == item %}active{% endif %}">
+                            {{ doc.title }}
+                          </a>
+                        </li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- endfor -%}
+                  </ul>
+                </div>
+                {%- endfor -%}
+              {%- else -%}
+              <ul class="nav-section-list">
+                {%- for item in section.items -%}
+                  {%- for doc in docs -%}
+                    {%- if doc.slug == item -%}
+                    <li>
+                      <a href="{{ doc.url | relative_url }}" class="{% if page.slug == item %}active{% endif %}">
+                        {{ doc.title }}
+                      </a>
+                    </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+              </ul>
+              {%- endif -%}
+            </div>
+            {%- endfor -%}
+          </nav>
+        </div>
+      </aside>
+
+      <main class="docs-content" aria-label="Content">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+          <header class="post-header">
+            <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+            <p class="post-meta">
+              <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+                {{ page.date | date: "%Y-%m-%d" }}
+              </time>
+            </p>
+          </header>
+
+          <div class="post-content e-content" itemprop="articleBody">
+            {{ content }}
+          </div>
+        </article>
+      </main>
+
+      <aside class="docs-toc">
+        <div class="docs-toc-inner">
+          <nav class="toc-nav">
+            <h3>目录</h3>
+            <div id="toc"></div>
+          </nav>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 移动端章节导航按钮（小窗口时显示） -->
+    <button class="section-nav-btn" id="sectionNavBtn" type="button" aria-label="章节导航">
+      <svg viewBox="0 0 24 24" width="20" height="20">
+        <path fill="currentColor" d="M3 9h14v2H3V9zm0-4h14v2H3V5zm0 8h14v2H3v-2zm0 4h14v2H3v-2zm16-4h2v6h-2v-6zm0-8h2v2h-2V7z"/>
+      </svg>
+    </button>
+
+    <!-- 章节导航面板 -->
+    <div class="section-nav-panel" id="sectionNavPanel">
+      <div class="section-nav-header">
+        <span>当前章节</span>
+        <button class="section-nav-close" id="sectionNavClose" type="button">
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="section-nav-list" id="sectionNavList"></nav>
+    </div>
+
+    <!-- 章节导航遮罩 -->
+    <div class="section-nav-overlay" id="sectionNavOverlay"></div>
+
+    <script>
+    // DOMContentLoaded: 页面 HTML 加载完成后执行
+    // 确保所有 DOM 元素都已存在，可以安全地操作它们
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // ============================================
+      // 处理 Mermaid 图表
+      // ============================================
+      // Mermaid 是一个用文本代码绘制图表的库
+      // 例如：```mermaid ... ``` 会生成流程图
+      document.querySelectorAll('pre code.language-mermaid').forEach(function(code) {
+        var pre = code.parentElement;      // 获取父元素 <pre>
+        pre.className = 'mermaid';          // 添加 mermaid 类名
+        pre.innerHTML = code.textContent;   // 用代码内容替换整个 pre 的内容
+      });
+      if (window.mermaid) {
+        mermaid.run();  // 运行 Mermaid，将代码转换为图表
+      }
+
+      // ============================================
+      // 为代码块添加复制按钮
+      // ============================================
+      // 遍历所有代码块，为每个添加一个复制按钮
+      document.querySelectorAll('.post-content pre').forEach(function(pre) {
+        if (pre.classList.contains('mermaid')) return;  // Mermaid 图表不需要复制按钮
+
+        // document.createElement: 创建一个新的 HTML 元素
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = '复制';
+
+        // addEventListener: 为元素添加事件监听器
+        // 'click' 是事件类型，点击时执行后面的函数
+        btn.addEventListener('click', function() {
+          var code = pre.querySelector('code');
+          // textContent: 获取元素的文本内容
+          var text = code ? code.textContent : pre.textContent;
+
+          // navigator.clipboard.writeText: 异步写入剪贴板
+          // .then(): Promise 成功后执行的回调函数
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = '已复制';
+            // setTimeout: 延迟执行，1500毫秒后恢复按钮文字
+            setTimeout(function() { btn.textContent = '复制'; }, 1500);
+          });
+        });
+        // appendChild: 将元素添加为最后一个子元素
+        pre.appendChild(btn);
+      });
+
+      // ============================================
+      // 移动端导航菜单
+      // ============================================
+      // getElementById: 通过 ID 获取单个元素
+      var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      var mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', function(e) {
+          // e.preventDefault(): 阻止默认行为
+          // 对于按钮来说主要是阻止表单提交等默认行为
+          e.preventDefault();
+          // e.stopPropagation(): 阻止事件冒泡
+          // 防止点击事件传递到父元素（如遮罩层）
+          e.stopPropagation();
+
+          // getBoundingClientRect(): 获取元素相对于视口的位置和尺寸
+          // 返回 { top, left, right, bottom, width, height }
+          var btnRect = mobileMenuBtn.getBoundingClientRect();
+          // 动态设置菜单位置，让菜单显示在按钮正下方
+          mobileMenu.style.left = btnRect.left + 'px';
+          mobileMenu.style.top = (btnRect.bottom + 4) + 'px';  // +4 留一点间隙
+
+          // classList.toggle(): 切换类名，有则移除，无则添加
+          mobileMenu.classList.toggle('open');
+          mobileMenuOverlay.classList.toggle('open');
+          document.body.classList.toggle('menu-open');
+
+          // 打开菜单时，自动展开当前文档所在的目录项
+          var activeLink = mobileMenu.querySelector('a.active');
+          if (activeLink) {
+            // closest(): 向上查找最近的匹配选择器的祖先元素
+            var parentList = activeLink.closest('.mobile-nav-list');
+            var parentSubmenu = activeLink.closest('.mobile-nav-submenu');
+            var parentSection = activeLink.closest('.mobile-nav-section');
+
+            // 展开当前链接所在的列表
+            if (parentList && !parentList.classList.contains('open')) {
+              parentList.classList.add('open');
+            }
+
+            // 如果在三级目录中，展开二级目录并旋转图标
+            if (parentSubmenu) {
+              var submenuTitle = parentSubmenu.querySelector('.mobile-nav-submenu-title');
+              if (submenuTitle) {
+                var toggle = submenuTitle.querySelector('.section-toggle');
+                if (toggle) {
+                  // style.transform: CSS 变换属性
+                  // rotate(0deg) 表示箭头朝下（展开状态）
+                  toggle.style.transform = 'rotate(0deg)';
+                }
+              }
+            }
+
+            // 展开一级目录并旋转图标
+            if (parentSection) {
+              var sectionTitle = parentSection.querySelector('.mobile-nav-title');
+              if (sectionTitle) {
+                var toggle = sectionTitle.querySelector('.section-toggle');
+                if (toggle) {
+                  toggle.style.transform = 'rotate(0deg)';
+                }
+              }
+            }
+
+            // scrollIntoView: 滚动到元素可见
+            // behavior: 'smooth' 平滑滚动
+            // block: 'center' 滚动到视口中央
+            setTimeout(function() {
+              activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);  // 延迟100毫秒，等菜单展开动画完成
+          }
+        });
+
+        // 点击遮罩层关闭菜单
+        mobileMenuOverlay.addEventListener('click', function() {
+          mobileMenu.classList.remove('open');
+          mobileMenuOverlay.classList.remove('open');
+          document.body.classList.remove('menu-open');
+        });
+
+        // 点击菜单中的链接后关闭菜单
+        mobileMenu.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            mobileMenu.classList.remove('open');
+            mobileMenuOverlay.classList.remove('open');
+            document.body.classList.remove('menu-open');
+          });
+        });
+
+        // 移动端一级目录折叠
+        // 点击目录标题可以展开/收起子列表
+        mobileMenu.querySelectorAll('.mobile-nav-title').forEach(function(title) {
+          title.addEventListener('click', function() {
+            // nextElementSibling: 下一个兄弟元素
+            var list = this.nextElementSibling;
+            var toggle = this.querySelector('.section-toggle');
+            if (list && list.classList.contains('mobile-nav-list')) {
+              list.classList.toggle('open');
+            }
+            // 根据展开状态旋转箭头
+            if (toggle) {
+              toggle.style.transform = list && list.classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+            }
+          });
+        });
+
+        // 移动端三级目录折叠
+        mobileMenu.querySelectorAll('.mobile-nav-submenu-title').forEach(function(title) {
+          title.addEventListener('click', function() {
+            var list = this.nextElementSibling;
+            var toggle = this.querySelector('.section-toggle');
+            if (list && list.classList.contains('mobile-nav-list')) {
+              list.classList.toggle('open');
+            }
+            if (toggle) {
+              toggle.style.transform = list && list.classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+            }
+          });
+        });
+      }
+
+      // ============================================
+      // 桌面端侧边栏目录折叠
+      // ============================================
+      document.querySelectorAll('.nav-section-title, .nav-submenu-title').forEach(function(title) {
+        title.addEventListener('click', function() {
+          var section = this.parentElement;
+          section.classList.toggle('collapsed');
+        });
+      });
+
+      // ============================================
+      // 自动生成右侧目录（TOC）
+      // ============================================
+      var content = document.querySelector('.post-content');
+      var toc = document.getElementById('toc');
+      // querySelectorAll 支持多个选择器，用逗号分隔
+      var headings = content.querySelectorAll('h2, h3, h4');
+
+      // 如果没有标题，隐藏目录区域和章节导航按钮
+      if (headings.length === 0) {
+        document.querySelector('.docs-toc').style.display = 'none';
+        var sectionNavBtn = document.getElementById('sectionNavBtn');
+        if (sectionNavBtn) sectionNavBtn.style.display = 'none';
+        return;
+      }
+
+      // 创建目录列表
+      var ul = document.createElement('ul');
+      ul.className = 'toc-list';
+      // 用于追踪当前层级的变量
+      var currentH2 = null;
+      var currentH3List = null;
+      var currentH3 = null;
+      var currentH4List = null;
+
+      // 遍历所有标题，构建目录树
+      headings.forEach(function(heading, index) {
+        // 为每个标题生成唯一 ID，用于锚点跳转
+        var id = 'heading-' + index;
+        heading.id = id;
+
+        // 创建目录项
+        var li = document.createElement('li');
+        // tagName 返回大写的标签名，如 'H2'，转小写后作为类名
+        li.className = heading.tagName.toLowerCase();
+
+        // 创建链接
+        var a = document.createElement('a');
+        a.href = '#' + id;  // 锚点链接
+        a.textContent = heading.textContent;
+        li.appendChild(a);
+
+        // 根据标题层级，将目录项添加到正确的位置
+        if (heading.tagName === 'H2') {
+          // H2 直接添加到主列表
+          ul.appendChild(li);
+          currentH2 = li;
+          currentH3List = null;
+          currentH3 = null;
+          currentH4List = null;
+        } else if (heading.tagName === 'H3') {
+          // H3 添加到最近 H2 的子列表
+          if (!currentH3List && currentH2) {
+            currentH3List = document.createElement('ul');
+            currentH3List.className = 'toc-sublist';
+            currentH2.appendChild(currentH3List);
+          }
+          if (currentH3List) {
+            currentH3List.appendChild(li);
+          }
+          currentH3 = li;
+          currentH4List = null;
+        } else if (heading.tagName === 'H4') {
+          // H4 添加到最近 H3 的子列表
+          if (!currentH4List && currentH3) {
+            currentH4List = document.createElement('ul');
+            currentH4List.className = 'toc-sublist-h4';
+            currentH3.appendChild(currentH4List);
+          }
+          if (currentH4List) {
+            currentH4List.appendChild(li);
+          }
+        }
+      });
+
+      // 将生成的目录添加到页面
+      toc.appendChild(ul);
+
+      // ============================================
+      // 目录平滑滚动
+      // ============================================
+      // 点击目录链接时，平滑滚动到对应标题
+      toc.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();  // 阻止默认跳转
+          // getAttribute 获取属性值
+          var target = document.querySelector(this.getAttribute('href'));
+          target.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // ============================================
+      // 滚动时高亮当前目录项
+      // ============================================
+      // IntersectionObserver: 监听元素是否进入视口
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          // entry.isIntersecting: 元素是否在视口中
+          if (entry.isIntersecting) {
+            // 移除所有目录项的高亮
+            toc.querySelectorAll('a').forEach(function(a) {
+              a.classList.remove('active');
+            });
+            // 高亮当前可见标题对应的目录项
+            var activeLink = toc.querySelector('a[href="#' + entry.target.id + '"]');
+            if (activeLink) activeLink.classList.add('active');
+          }
+        });
+      }, {
+        // rootMargin: 观察区域的边距
+        // '-20% 0% -80% 0%' 表示只观察视口中间 20% 的区域
+        // 这样只有标题滚动到视口上部 20% 位置时才会触发
+        rootMargin: '-20% 0% -80% 0%'
+      });
+
+      // 观察所有标题
+      headings.forEach(function(heading) {
+        observer.observe(heading);
+      });
+
+      // ============================================
+      // 移动端章节导航按钮功能
+      // ============================================
+      // 为小屏幕提供一个固定在右下角的按钮，点击后显示章节列表
+      var sectionNavBtn = document.getElementById('sectionNavBtn');
+      var sectionNavPanel = document.getElementById('sectionNavPanel');
+      var sectionNavList = document.getElementById('sectionNavList');
+      var sectionNavClose = document.getElementById('sectionNavClose');
+      var sectionNavOverlay = document.getElementById('sectionNavOverlay');
+
+      if (sectionNavBtn && sectionNavPanel && headings.length > 0) {
+        // 构建章节导航列表（复用右侧目录的数据）
+        headings.forEach(function(heading) {
+          var li = document.createElement('li');
+          // 根据标题级别添加类名，用于控制缩进
+          li.className = heading.tagName.toLowerCase();
+
+          var a = document.createElement('a');
+          a.href = '#' + heading.id;
+          a.textContent = heading.textContent;
+          li.appendChild(a);
+          sectionNavList.appendChild(li);
+        });
+
+        // 打开章节导航面板
+        sectionNavBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          sectionNavPanel.classList.add('open');
+          sectionNavOverlay.classList.add('open');
+
+          // 滚动到当前激活的章节
+          var activeLink = sectionNavList.querySelector('a.active');
+          if (activeLink) {
+            activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+
+        // 关闭章节导航面板的函数
+        function closeSectionNav() {
+          sectionNavPanel.classList.remove('open');
+          sectionNavOverlay.classList.remove('open');
+        }
+
+        // 点击关闭按钮关闭
+        sectionNavClose.addEventListener('click', closeSectionNav);
+
+        // 点击遮罩关闭
+        sectionNavOverlay.addEventListener('click', closeSectionNav);
+
+        // 点击章节链接跳转并关闭面板
+        sectionNavList.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+            closeSectionNav();
+          });
+        });
+
+        // 滚动时同步高亮章节导航中的当前项
+        // 复用之前的 observer，添加回调来更新章节导航面板
+        var sectionNavObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              // 移除所有高亮
+              sectionNavList.querySelectorAll('a').forEach(function(a) {
+                a.classList.remove('active');
+              });
+              // 高亮当前章节
+              var activeLink = sectionNavList.querySelector('a[href="#' + entry.target.id + '"]');
+              if (activeLink) activeLink.classList.add('active');
+            }
+          });
+        }, { rootMargin: '-20% 0% -80% 0%' });
+
+        headings.forEach(function(heading) {
+          sectionNavObserver.observe(heading);
+        });
+      }
+    });
+    </script>
+
+  </body>
+
+</html>

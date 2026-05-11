@@ -1,0 +1,1020 @@
+---
+---
+
+// ============================================
+// 字体定义
+// ============================================
+
+// @font-face: 自定义字体声明
+// 让浏览器加载本地字体文件，这样网页就能使用这个字体了
+@font-face {
+  font-family: 'LXGW WenKai Mono';  // 字体名称，后面用这个名称引用
+  src: url('/assets/fonts/LXGWWenKaiMono-Regular.ttf') format('truetype');  // 字体文件路径
+  font-weight: normal;  // 字体粗细
+  font-style: normal;   // 字体样式（斜体等）
+}
+
+// 导入 minima 主题的默认样式
+// Jekyll 默认使用 minima 主题，这里继承它的样式
+@import "minima";
+
+// ============================================
+// 全局样式设置
+// ============================================
+
+// html: 根元素，设置基础字体大小
+// 使用 !important 确保覆盖主题默认值
+html {
+  font-size: 18px !important;
+  overflow-x: hidden;  // 防止横向滚动条
+}
+
+// body: 页面主体样式
+body {
+  // font-family: 字体列表，浏览器会从左到右查找可用的字体
+  // 'LXGW WenKai Mono' 是我们自定义的字体，后面的都是备用字体
+  font-family: 'LXGW WenKai Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 18px !important;
+  line-height: 1.7 !important;  // 行高，1.7 表示行间距是字号的 1.7 倍
+  overflow-x: hidden;  // 防止横向滚动条
+}
+
+// 确保所有文本元素都使用统一字体
+html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, section, nav {
+  font-family: 'LXGW WenKai Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+// 去除代码块外层 div 的背景色
+.highlight {
+  background: transparent !important;
+}
+
+.highlighter-rouge .highlight {
+  background: transparent !important;
+}
+
+// ============================================
+// 顶部导航栏样式
+// ============================================
+
+.site-header {
+  .header-wrapper {
+    // display: flex: 弹性布局，让子元素水平排列
+    // 默认情况下 flex 子元素会水平排成一行
+    display: flex;
+    // align-items: center: 垂直居中对齐
+    align-items: center;
+  }
+
+  .site-title {
+    // flex-shrink: 0: 不允许收缩
+    // 当空间不够时，这个元素不会被压缩
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-btn {
+    margin-right: 8px;  // 右边距，和站点标题分开一点
+    flex-shrink: 0;    // 不允许收缩
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    // margin-left: auto: 自动占据左侧所有剩余空间
+    // 这样导航链接会被推到右边
+    margin-left: auto;
+
+    .header-link {
+      padding: 8px 16px;    // 内边距：上下8px，左右16px
+      color: #555;          // 文字颜色（灰色）
+      text-decoration: none; // 去掉下划线
+      font-size: 16px;
+      border-radius: 4px;   // 圆角
+      // transition: 过渡动画，all 表示所有属性，0.15s 持续时间，ease 缓动函数
+      transition: all 0.15s ease;
+
+      // &:hover: 鼠标悬停时的样式
+      // & 在 SCSS 中表示父选择器，这里就是 .header-link
+      &:hover {
+        background-color: #f0f4f8;  // 浅蓝灰背景
+        color: #1976D2;              // 蓝色文字
+      }
+    }
+  }
+}
+
+// ============================================
+// 文档页面布局样式
+// ============================================
+
+.docs-layout {
+  // 主容器：包含侧边栏、内容区、目录
+  .docs-container {
+    display: flex;              // 弹性布局
+    justify-content: center;    // 水平居中
+    max-width: 1440px;          // 最大宽度
+    margin: 0 auto;             // 水平居中（左右 auto）
+    padding: 30px 20px;         // 内边距
+    gap: 40px;                  // 子元素之间的间距
+    position: relative;
+  }
+
+  // 左侧导航栏
+  .docs-sidebar {
+    width: 260px;       // 固定宽度
+    flex-shrink: 0;     // 不收缩
+
+    .docs-sidebar-inner {
+      // position: fixed: 固定定位，相对于视口定位
+      // 滚动页面时，这个元素会固定在屏幕上不动
+      position: fixed;
+      width: 260px;
+      top: 70px;        // 距离顶部70px（避开导航栏）
+      // calc(): CSS计算函数，视口高度减去90px
+      max-height: calc(100vh - 90px);
+      overflow-y: auto; // 内容超出时垂直滚动
+    }
+
+    .docs-nav {
+      .nav-section {
+        margin-bottom: 0 !important;
+      }
+
+      // 导航分组标题（一级目录）
+      .nav-section-title {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        margin-bottom: 0;
+        font-size: 17px;
+        font-weight: 600;   // 字重，600是半粗体
+        color: #333;
+        border-radius: 8px;
+        cursor: pointer;     // 鼠标变成手型
+        user-select: none;   // 禁止选中文本
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          // rgba: 红绿蓝+透明度，0.04 是很淡的黑色
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        .section-toggle {
+          margin-right: 8px;
+          transition: transform 0.2s ease;  // transform 变换动画
+          opacity: 0.6;  // 透明度，0.6 表示60%不透明
+        }
+      }
+
+      // .collapsed: 折叠状态
+      .nav-section.collapsed {
+        .nav-section-list,
+        .nav-submenu {
+          display: none;  // 隐藏子元素
+        }
+
+        .section-toggle {
+          // transform: rotate(): 旋转元素
+          // -90deg 表示逆时针旋转90度
+          transform: rotate(-90deg);
+        }
+      }
+
+      // 子菜单（三级目录）
+      .nav-submenu {
+        margin-bottom: 0 !important;
+        padding-left: 24px;  // 缩进，表示层级关系
+      }
+
+      .nav-submenu-title {
+        display: flex;
+        align-items: center;
+        padding: 6px 12px 6px 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        font-weight: 500;
+        color: #666;
+        border-radius: 6px;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        .section-toggle {
+          margin-right: 6px;
+          transition: transform 0.2s ease;
+          opacity: 0.5;
+        }
+      }
+
+      .nav-submenu.collapsed {
+        .nav-section-list {
+          display: none;
+        }
+
+        .section-toggle {
+          transform: rotate(-90deg);
+        }
+      }
+
+      // 导航链接列表
+      .nav-section-list {
+        list-style: none;  // 去掉列表圆点
+        padding: 2px 0 0 24px;  // 上右下左
+        margin: 0;
+      }
+
+      li {
+        margin-bottom: 1px;
+
+        &:last-child {
+          margin-bottom: 0;  // 最后一个元素不需要下边距
+        }
+      }
+
+      a {
+        display: block;    // 块级元素，占满整行
+        padding: 6px 12px 6px 8px;
+        color: #555;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: all 0.15s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+          color: #1976D2;
+        }
+
+        // &.active: 当前激活的链接
+        &.active {
+          background-color: #e3f2fd;  // 浅蓝色背景
+          color: #1565C0;              // 深蓝色文字
+          font-weight: 500;
+        }
+      }
+
+      // 子菜单下的链接缩进更多
+      .nav-submenu .nav-section-list {
+        padding-left: 24px;
+      }
+
+      .nav-submenu .nav-section-list a {
+        font-size: 16px;
+      }
+    }
+  }
+
+  // 中间内容区
+  .docs-content {
+    width: 800px;        // 固定宽度
+    flex-shrink: 0;      // 不收缩
+    flex-grow: 0;        // 不放大
+
+    .post-header {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;  // 下边框作为分隔线
+
+      .post-title {
+        font-size: 36px;
+        margin-bottom: 10px;
+        color: #1a1a1a;
+      }
+
+      .post-meta {
+        color: #888;  // 元信息用浅色
+        font-size: 16px;
+      }
+    }
+
+    // 文章正文样式
+    .post-content {
+      font-size: 18px;
+      line-height: 1.8;
+
+      // 各级标题样式
+      h2 {
+        margin-top: 48px;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #1976D2;  // 蓝色下划线
+        font-size: 28px;
+        color: #1a1a1a;
+      }
+
+      h3 {
+        margin-top: 36px;
+        margin-bottom: 12px;
+        font-size: 22px;
+        color: #333;
+      }
+
+      h4 {
+        margin-top: 28px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #444;
+      }
+
+      p {
+        margin-bottom: 16px;
+      }
+
+      // 图片样式
+      img {
+        max-width: 90%;      // 最大宽度90%，比正文窄一点
+        height: auto;        // 高度自动，保持宽高比
+        border-radius: 4px;  // 圆角
+        margin: 16px auto;   // 上下边距16px，左右auto实现水平居中
+        display: block;      // 块级元素才能用 margin: auto 居中
+      }
+
+      // 表格样式
+      table {
+        width: 100%;
+        border-collapse: collapse;  // 边框合并
+        margin: 20px 0;
+
+        th, td {
+          border: 1px solid #ddd;
+          padding: 10px 12px;
+          text-align: left;
+        }
+
+        th {
+          background-color: #f5f5f5;  // 表头背景色
+          font-weight: 600;
+        }
+
+        // 斑马纹效果：偶数行不同背景色
+        tr:nth-child(even) {
+          background-color: #fafafa;
+        }
+      }
+
+      ul, ol {
+        margin-bottom: 16px;
+        padding-left: 24px;  // 列表缩进
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      // 行内代码样式（`code` 这种）
+      code {
+        background-color: #f5f5f5;  // 浅灰背景
+        padding: 2px 6px;           // 小内边距
+        border-radius: 3px;         // 小圆角
+        font-size: 0.9em;           // 稍微小一点
+        font-family: 'LXGW WenKai Mono', 'Consolas', 'Monaco', monospace;
+      }
+
+      // 代码块样式（```code``` 这种）
+      pre {
+        background-color: #fffbeb !important;  // 浅黄背景
+        color: #24292f;
+        padding: 16px;
+        border-radius: 6px;
+        overflow-x: auto;     // 横向滚动（代码太长时）
+        margin: 20px auto;    // 居中显示
+        max-width: 90%;       // 比正文窄
+        box-sizing: border-box;  // padding 包含在宽度内
+        position: relative;   // 为复制按钮定位做准备
+
+        code {
+          background: none;   // 重置行内代码的背景
+          border: none;
+          padding: 0;
+          color: inherit;     // 继承 pre 的颜色
+          font-size: 16px;
+          // white-space: pre-wrap: 保留空白符，但允许换行
+          // 这样代码不会超出容器，长行会自动折行
+          white-space: pre-wrap;
+          word-break: break-word;  // 允许单词内断行
+        }
+
+        // 复制按钮样式
+        .copy-btn {
+          // position: absolute: 绝对定位，相对于最近的 position: relative 父元素
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          padding: 4px 8px;
+          font-size: 12px;
+          background: #fff;
+          border: 1px solid #d0d7de;
+          border-radius: 4px;
+          cursor: pointer;
+          color: #57606a;
+          opacity: 0;  // 默认隐藏
+          transition: opacity 0.2s;
+
+          &:hover {
+            background: #f3f4f6;
+            border-color: #8c959f;
+          }
+
+          &:active {
+            background: #eaecef;
+          }
+        }
+
+        // 鼠标悬停代码块时显示复制按钮
+        &:hover .copy-btn {
+          opacity: 1;
+        }
+
+        // Mermaid 图表特殊处理（不需要背景色）
+        &.mermaid {
+          background-color: transparent;
+          color: inherit;
+          text-align: center;
+        }
+      }
+
+      // 引用块样式
+      blockquote {
+        border-left: 4px solid #1976D2;  // 左边蓝色竖线
+        padding: 12px 20px;
+        margin: 20px 0;
+        background-color: #f8f9fa;
+        color: #555;
+      }
+    }
+  }
+
+  // 右侧目录
+  .docs-toc {
+    width: 200px;
+    flex-shrink: 0;
+
+    .docs-toc-inner {
+      position: fixed;  // 固定定位，滚动时不动
+      width: 200px;
+      top: 70px;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+    }
+
+    .toc-nav {
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #666;
+        margin: 0 0 12px 0;
+        padding: 0;
+      }
+
+      .toc-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          margin-bottom: 0;
+
+          a {
+            color: #666;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 0 10px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.04);
+              color: #1976D2;
+            }
+
+            &.active {
+              background-color: #e3f2fd;
+              color: #1565C0;
+              font-weight: 500;
+            }
+          }
+
+          // h3 级别的目录项，缩进20px
+          &.h3 {
+            a {
+              font-size: 16px;
+              color: #777;
+              padding: 0 10px 0 20px;
+            }
+          }
+
+          // h4 级别的目录项，缩进32px
+          &.h4 {
+            a {
+              font-size: 16px;
+              color: #888;
+              padding: 0 10px 0 32px;
+            }
+          }
+        }
+      }
+
+      .toc-sublist {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .toc-sublist-h4 {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
+}
+
+// ============================================
+// 移动端菜单样式
+// ============================================
+
+// 移动端菜单按钮
+.mobile-menu-btn {
+  display: none;  // 默认隐藏
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  color: #666;
+  border: 1px solid #e0e0e0;
+  margin-right: 8px;      // 和站点标题的间距
+  flex-shrink: 0;
+  z-index: 1001;
+  position: relative;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: #e3f2fd;
+    border-color: #1976D2;
+    color: #1976D2;
+  }
+}
+
+// 移动端菜单遮罩层
+// 点击遮罩可以关闭菜单
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;   // 固定定位，覆盖整个屏幕
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);  // 半透明黑色
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  // pointer-events: none: 不响应鼠标事件
+  // 配合下面的 .open 类使用
+  pointer-events: none;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;  // 打开时响应点击
+  }
+}
+
+// 移动端下拉菜单面板
+.mobile-menu {
+  display: none;
+  position: fixed;
+  width: 200px;           // 和目录下拉一致
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+
+  &.open {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+
+  .mobile-nav {
+    padding: 4px 0;       // 和目录下拉一致
+
+    .mobile-nav-section {
+      margin-bottom: 0;
+    }
+
+    .mobile-nav-title {
+      display: flex;
+      align-items: center;
+      padding: 6px 10px;
+      margin-bottom: 0;
+      font-size: 15px;        // 一级目录，最大
+      font-weight: 600;
+      color: #333;
+      border-radius: 0;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.15s ease;
+      border-bottom: none;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+
+      .section-toggle {
+        margin-right: 6px;
+        transition: transform 0.2s ease;
+        opacity: 0.6;
+      }
+    }
+
+    .mobile-nav-list {
+      list-style: none;
+      padding: 2px 0 0 10px;  // 缩进减少
+      margin: 0;
+      display: none;  // 默认隐藏
+
+      &.open {
+        display: block;  // 展开时显示
+      }
+
+      li {
+        margin: 0;
+        margin-bottom: 1px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      a {
+        display: block;
+        padding: 6px 10px;
+        color: #555;
+        text-decoration: none;
+        border-radius: 0;
+        font-size: 13px;      // 文档链接，最小
+        background: transparent;
+        transition: all 0.15s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+          color: #1976D2;
+        }
+
+        &.active {
+          background-color: #e3f2fd;
+          color: #1565C0;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .mobile-nav-submenu {
+      margin-bottom: 0;
+
+      .mobile-nav-submenu-title {
+        display: flex;
+        align-items: center;
+        padding: 6px 10px 6px 16px;
+        margin-bottom: 0;
+        font-size: 14px;      // 二级目录，居中
+        font-weight: 500;
+        color: #666;
+        border-radius: 0;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        .section-toggle {
+          margin-right: 4px;
+          transition: transform 0.2s ease;
+          opacity: 0.5;
+        }
+      }
+
+      .mobile-nav-list {
+        padding-left: 20px;
+      }
+    }
+  }
+}
+
+// ============================================
+// 响应式布局
+// 使用 @media 查询根据屏幕宽度应用不同样式
+// ============================================
+
+// 屏幕宽度 <= 1400px 时，隐藏右侧目录
+@media screen and (max-width: 1400px) {
+  .docs-layout .docs-toc {
+    display: none;
+  }
+
+  .docs-layout .docs-container {
+    max-width: 1260px;
+  }
+}
+
+// 屏幕宽度 <= 1100px 时，显示移动端菜单，隐藏侧边栏
+@media screen and (max-width: 1100px) {
+  .mobile-menu-btn {
+    display: flex;  // 显示菜单按钮
+  }
+
+  .mobile-menu,
+  .mobile-menu-overlay {
+    display: block;  // 启用移动端菜单
+  }
+
+  .docs-layout .docs-sidebar {
+    display: none;  // 隐藏桌面端侧边栏
+  }
+
+  .docs-layout .docs-container {
+    max-width: 1000px;
+  }
+
+  .docs-layout .docs-content {
+    width: 100%;
+  }
+
+  // 菜单打开时禁止页面滚动
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+// 屏幕宽度 <= 900px 时，调整布局间距
+@media screen and (max-width: 900px) {
+  .docs-layout {
+    .docs-container {
+      padding: 20px 15px;  // 减小内边距
+      gap: 20px;
+    }
+
+    .docs-content {
+      .post-header .post-title {
+        font-size: 28px;  // 标题字体缩小
+      }
+
+      .post-content h2 {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+// 屏幕宽度 <= 600px 时，进一步调整
+@media screen and (max-width: 600px) {
+  .docs-layout .docs-container {
+    padding: 15px 10px;
+  }
+
+  .docs-layout .docs-content {
+    width: 100%;
+  }
+
+  .site-header {
+    .header-nav {
+      .header-link {
+        padding: 8px 12px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// ============================================
+// 移动端章节导航按钮（右下角固定）
+// ============================================
+
+// 章节导航按钮，默认隐藏
+.section-nav-btn {
+  display: none;           // 默认隐藏，小屏幕时显示
+  position: fixed;         // 固定定位，滚动时保持在屏幕上
+  top: 62px;               // 在导航栏下方，更贴近导航栏
+  right: 20px;             // 距离右侧20px
+  width: 36px;             // 按钮宽度
+  height: 36px;            // 按钮高度
+  border-radius: 6px;      // 圆角方形
+  background: #fff;        // 白色背景
+  color: #1976D2;          // 蓝色图标
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  // 阴影效果
+  z-index: 1000;           // 层级较高
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #e3f2fd;   // 悬停时浅蓝背景
+    border-color: #1976D2;
+  }
+
+  &:active {
+    transform: scale(0.95); // 点击时稍微缩小
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// 章节导航遮罩
+.section-nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+// 章节导航面板
+.section-nav-panel {
+  display: none;
+  position: fixed;
+  top: 104px;             // 在按钮下方 (62 + 36 + 6)
+  right: 20px;
+  width: 200px;           // 宽度窄一些
+  max-height: 60vh;        // 最大高度为视口的60%
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1002;
+  transform: translateY(-10px);  // 初始位置偏上
+  opacity: 0;
+  pointer-events: none;   // 关闭时不响应点击
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  &.open {
+    transform: translateY(0);   // 滑动到正确位置
+    opacity: 1;
+    pointer-events: auto;       // 打开时响应点击
+  }
+
+  // 面板头部
+  .section-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+
+    .section-nav-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: #f0f0f0;
+        color: #333;
+      }
+    }
+  }
+
+  // 章节列表
+  .section-nav-list {
+    list-style: none;
+    padding: 4px 0;
+    margin: 0;
+    max-height: calc(60vh - 40px);  // 减去头部高度
+    overflow-y: auto;               // 内容超出时可滚动
+
+    li {
+      margin: 0;
+
+      a {
+        display: block;
+        padding: 6px 10px;
+        color: #555;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;  // 左侧指示条
+
+        &:hover {
+          background: #f5f5f5;
+          color: #1976D2;
+        }
+
+        &.active {
+          background: #e3f2fd;
+          color: #1565C0;
+          border-left-color: #1976D2;  // 当前章节显示蓝色指示条
+        }
+      }
+
+      // H3 级别缩进
+      &.h3 a {
+        padding-left: 20px;
+        font-size: 13px;
+      }
+
+      // H4 级别缩进更多
+      &.h4 a {
+        padding-left: 30px;
+        font-size: 12px;
+        color: #777;
+      }
+    }
+  }
+}
+
+// 当右侧目录栏隐藏时（宽度 <= 1400px），显示章节导航按钮
+@media screen and (max-width: 1400px) {
+  .section-nav-btn {
+    display: flex;
+  }
+
+  .section-nav-panel,
+  .section-nav-overlay {
+    display: block;
+  }
+}
+
+// ============================================
+// 首页文章列表样式
+// ============================================
+
+.home {
+  .post-list {
+    max-width: 800px;
+    margin: 0 auto;  // 居中
+
+    li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+
+      h3 {
+        margin-bottom: 2px;
+
+        a {
+          color: #333;
+          text-decoration: none;
+
+          &:hover {
+            color: #1976D2;
+          }
+        }
+      }
+
+      .post-meta {
+        font-size: 16px;
+        color: #999;
+        margin-bottom: 4px;
+      }
+
+      .post-excerpt {
+        color: #666;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// 隐藏页脚
+footer.site-footer {
+  display: none;
+}
