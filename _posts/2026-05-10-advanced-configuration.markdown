@@ -4,6 +4,9 @@ title: "进阶配置"
 date: 2026-05-10
 categories: tutorial
 slug: advanced-configuration
+nav_category: 配置与定制
+nav_subcategory: 基础配置
+nav_order: 1
 ---
 
 ## 配置文件详解

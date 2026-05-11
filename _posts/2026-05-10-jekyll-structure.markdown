@@ -4,6 +4,8 @@ title: "Jekyll 目录结构与文件说明"
 date: 2026-05-10
 categories: tutorial
 slug: jekyll-structure
+nav_category: 入门指南
+nav_order: 2
 ---
 
 ## Jekyll 项目目录结构

@@ -4,6 +4,8 @@ title: "部署指南"
 date: 2026-05-10
 categories: tutorial
 slug: deployment-guide
+nav_category: 进阶功能
+nav_order: 1
 ---
 
 ## 部署选项

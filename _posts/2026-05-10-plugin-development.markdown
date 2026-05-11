@@ -4,6 +4,9 @@ title: "插件开发"
 date: 2026-05-10
 categories: tutorial
 slug: plugin-development
+nav_category: 配置与定制
+nav_subcategory: 高级配置
+nav_order: 2
 ---
 
 ## Jekyll 插件系统

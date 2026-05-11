@@ -4,6 +4,9 @@ title: "主题定制"
 date: 2026-05-10
 categories: tutorial
 slug: theme-customization
+nav_category: 配置与定制
+nav_subcategory: 基础配置
+nav_order: 2
 ---
 
 ## 主题系统

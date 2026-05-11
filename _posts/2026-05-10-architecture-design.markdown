@@ -4,6 +4,8 @@ title: "架构设计文档"
 date: 2026-05-10
 categories: tutorial
 slug: architecture-design
+nav_category: 进阶功能
+nav_order: 2
 ---
 
 ## 概述

@@ -112,27 +112,30 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
   .docs-container {
     display: flex;              // 弹性布局
     justify-content: center;    // 水平居中
-    max-width: 1440px;          // 最大宽度
+    width: 100%;                // 占满宽度
+    max-width: 100%;            // 无最大宽度限制
     margin: 0 auto;             // 水平居中（左右 auto）
-    padding: 30px 20px;         // 内边距
-    gap: 40px;                  // 子元素之间的间距
+    padding: 30px 2%;           // 使用百分比内边距
+    gap: 2%;                    // 使用百分比间距
     position: relative;
+    box-sizing: border-box;
   }
 
   // 左侧导航栏
   .docs-sidebar {
-    width: 260px;       // 固定宽度
-    flex-shrink: 0;     // 不收缩
+    width: 18%;                 // 使用百分比
+    min-width: 200px;           // 最小宽度保证可读性
+    max-width: 280px;           // 最大宽度
+    flex-shrink: 0;
 
     .docs-sidebar-inner {
-      // position: fixed: 固定定位，相对于视口定位
-      // 滚动页面时，这个元素会固定在屏幕上不动
       position: fixed;
-      width: 260px;
-      top: 70px;        // 距离顶部70px（避开导航栏）
-      // calc(): CSS计算函数，视口高度减去90px
+      width: inherit;           // 继承父元素宽度
+      min-width: 200px;
+      max-width: 280px;
+      top: 70px;
       max-height: calc(100vh - 90px);
-      overflow-y: auto; // 内容超出时垂直滚动
+      overflow-y: auto;
     }
 
     .docs-nav {
@@ -270,9 +273,11 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
   // 中间内容区
   .docs-content {
-    width: 800px;        // 固定宽度
-    flex-shrink: 0;      // 不收缩
-    flex-grow: 0;        // 不放大
+    width: 60%;               // 使用百分比
+    min-width: 600px;         // 最小宽度保证可读性
+    max-width: 1200px;        // 最大宽度
+    flex-shrink: 1;           // 允许收缩
+    flex-grow: 1;             // 允许放大
 
     .post-header {
       margin-bottom: 30px;
@@ -450,12 +455,16 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
   // 右侧目录
   .docs-toc {
-    width: 200px;
+    width: 15%;               // 使用百分比
+    min-width: 150px;         // 最小宽度
+    max-width: 220px;         // 最大宽度
     flex-shrink: 0;
 
     .docs-toc-inner {
-      position: fixed;  // 固定定位，滚动时不动
-      width: 200px;
+      position: fixed;
+      width: inherit;
+      min-width: 150px;
+      max-width: 220px;
       top: 70px;
       max-height: calc(100vh - 90px);
       overflow-y: auto;
@@ -728,35 +737,32 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
     display: none;
   }
 
-  .docs-layout .docs-container {
-    max-width: 1260px;
+  .docs-layout .docs-content {
+    max-width: none;
   }
 }
 
-// 屏幕宽度 <= 1100px 时，显示移动端菜单，隐藏侧边栏
-@media screen and (max-width: 1100px) {
+// 屏幕宽度 <= 1000px 时，显示移动端菜单，隐藏侧边栏
+@media screen and (max-width: 1000px) {
   .mobile-menu-btn {
-    display: flex;  // 显示菜单按钮
+    display: flex;
   }
 
   .mobile-menu,
   .mobile-menu-overlay {
-    display: block;  // 启用移动端菜单
+    display: block;
   }
 
   .docs-layout .docs-sidebar {
-    display: none;  // 隐藏桌面端侧边栏
-  }
-
-  .docs-layout .docs-container {
-    max-width: 1000px;
+    display: none;
   }
 
   .docs-layout .docs-content {
     width: 100%;
+    min-width: 0;
+    max-width: none;
   }
 
-  // 菜单打开时禁止页面滚动
   body.menu-open {
     overflow: hidden;
   }

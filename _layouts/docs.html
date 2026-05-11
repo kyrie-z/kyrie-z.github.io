@@ -14,58 +14,79 @@
       <aside class="docs-sidebar">
         <div class="docs-sidebar-inner">
           <nav class="docs-nav">
-            {%- assign docs = site.posts | where: "categories", "tutorial" | sort: "date" -%}
+            {%- assign all_docs = site.posts | where_exp: "post", "post.nav_category" | sort: "nav_order" -%}
+            {%- assign categories = all_docs | map: "nav_category" | uniq -%}
 
-            {%- for section in site.nav_menu -%}
+            {%- for category in categories -%}
             <div class="nav-section">
               <h3 class="nav-section-title">
                 <svg class="section-toggle" viewBox="0 0 24 24" width="14" height="14">
                   <path fill="currentColor" d="M7 10l5 5 5-5z"/>
                 </svg>
-                <span>{{ section.name }}</span>
+                <span>{{ category }}</span>
               </h3>
 
-              {%- if section.submenus -%}
-                {%- for submenu in section.submenus -%}
-                <div class="nav-submenu">
-                  <h4 class="nav-submenu-title">
-                    <svg class="section-toggle" viewBox="0 0 24 24" width="12" height="12">
-                      <path fill="currentColor" d="M7 10l5 5 5-5z"/>
-                    </svg>
-                    <span>{{ submenu.name }}</span>
-                  </h4>
-                  <ul class="nav-section-list">
-                    {%- for item in submenu.items -%}
-                      {%- for doc in docs -%}
-                        {%- if doc.slug == item -%}
-                        <li>
-                          <a href="{{ doc.url | relative_url }}" class="{% if page.slug == item %}active{% endif %}">
-                            {{ doc.title }}
-                          </a>
-                        </li>
-                        {%- endif -%}
+              {%- assign category_docs = all_docs | where: "nav_category", category -%}
+              {%- assign subcategories = category_docs | map: "nav_subcategory" | uniq -%}
+
+              {%- if subcategories.size > 1 or subcategories[0] != nil -%}
+                {%- for subcategory in subcategories -%}
+                  {%- if subcategory != nil -%}
+                  <div class="nav-submenu">
+                    <h4 class="nav-submenu-title">
+                      <svg class="section-toggle" viewBox="0 0 24 24" width="12" height="12">
+                        <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                      </svg>
+                      <span>{{ subcategory }}</span>
+                    </h4>
+                    <ul class="nav-section-list">
+                      {%- assign subcategory_docs = category_docs | where: "nav_subcategory", subcategory | sort: "nav_order" -%}
+                      {%- for doc in subcategory_docs -%}
+                      <li>
+                        <a href="{{ doc.url | relative_url }}" class="{% if page.url == doc.url %}active{% endif %}">
+                          {{ doc.title }}
+                        </a>
+                      </li>
                       {%- endfor -%}
-                    {%- endfor -%}
-                  </ul>
-                </div>
+                    </ul>
+                  </div>
+                  {%- endif -%}
                 {%- endfor -%}
               {%- else -%}
               <ul class="nav-section-list">
-                {%- for item in section.items -%}
-                  {%- for doc in docs -%}
-                    {%- if doc.slug == item -%}
-                    <li>
-                      <a href="{{ doc.url | relative_url }}" class="{% if page.slug == item %}active{% endif %}">
-                        {{ doc.title }}
-                      </a>
-                    </li>
-                    {%- endif -%}
-                  {%- endfor -%}
+                {%- assign no_subcategory_docs = category_docs | where_exp: "doc", "doc.nav_subcategory == nil" | sort: "nav_order" -%}
+                {%- for doc in no_subcategory_docs -%}
+                <li>
+                  <a href="{{ doc.url | relative_url }}" class="{% if page.url == doc.url %}active{% endif %}">
+                    {{ doc.title }}
+                  </a>
+                </li>
                 {%- endfor -%}
               </ul>
               {%- endif -%}
             </div>
             {%- endfor -%}
+
+            {%- assign ungrouped_docs = site.posts | where_exp: "post", "post.nav_category == nil" | sort: "date" -%}
+            {%- if ungrouped_docs.size > 0 -%}
+            <div class="nav-section">
+              <h3 class="nav-section-title">
+                <svg class="section-toggle" viewBox="0 0 24 24" width="14" height="14">
+                  <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                </svg>
+                <span>未分组</span>
+              </h3>
+              <ul class="nav-section-list">
+                {%- for doc in ungrouped_docs -%}
+                <li>
+                  <a href="{{ doc.url | relative_url }}" class="{% if page.url == doc.url %}active{% endif %}">
+                    {{ doc.title }}
+                  </a>
+                </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+            {%- endif -%}
           </nav>
         </div>
       </aside>
@@ -502,6 +523,18 @@
 
         headings.forEach(function(heading) {
           sectionNavObserver.observe(heading);
+        });
+      }
+
+      // 渲染数学公式
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ]
         });
       }
     });

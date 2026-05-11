@@ -5,6 +5,8 @@ date:   2026-05-11 21:00:00 +0800
 categories: linux input-method
 tags: [wayland, gnome, debian, fcitx, rime]
 slug: fcitx5-rime雾凇拼音
+nav_category: Linux 配置
+nav_order: 3
 ---
 
 ## 前言：Rime 输入法简介
