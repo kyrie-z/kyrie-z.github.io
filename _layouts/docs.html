@@ -246,6 +246,7 @@
 
             // 如果在三级目录中，展开二级目录并旋转图标
             if (parentSubmenu) {
+              parentSubmenu.classList.add('open');
               var submenuTitle = parentSubmenu.querySelector('.mobile-nav-submenu-title');
               if (submenuTitle) {
                 var toggle = submenuTitle.querySelector('.section-toggle');
@@ -257,8 +258,17 @@
               }
             }
 
-            // 展开一级目录并旋转图标
+            // 展开一级目录及其所有子分类
             if (parentSection) {
+              // 展开所有 submenu
+              parentSection.querySelectorAll('.mobile-nav-submenu').forEach(function(submenu) {
+                submenu.classList.add('open');
+                var innerList = submenu.querySelector('.mobile-nav-list');
+                if (innerList) innerList.classList.add('open');
+                var toggle = submenu.querySelector('.section-toggle');
+                if (toggle) toggle.style.transform = 'rotate(0deg)';
+              });
+
               var sectionTitle = parentSection.querySelector('.mobile-nav-title');
               if (sectionTitle) {
                 var toggle = sectionTitle.querySelector('.section-toggle');
