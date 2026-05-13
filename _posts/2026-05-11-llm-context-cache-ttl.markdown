@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "LLM上下文缓存及TTL探究：从原理到实战节省近 90% 成本"
+title:  "LLM 缓存与 TTL"
 date:   2026-05-11 21:15:00 +0800
 categories: ai llm
 tags: [llm, cache, claude, prompt-caching]
 nav_category: AI
-nav_order: 3
+nav_order: 1
 ---
 
 ## 1. 引言：为什么我们要聊"上下文缓存"？

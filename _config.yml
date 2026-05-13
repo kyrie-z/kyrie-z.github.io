@@ -18,10 +18,10 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: system security 站点
-email: your-email@example.com
+title: kyrie-z HOME
+email: zhouzilong0708@163.com
 description: >-
-  一个使用 Jekyll 构建的文档站点，包含左侧导航和右侧目录。
+  kyrie-z 的文档类记忆站点。
 baseurl: ""
 url: ""
 lang: zh-CN

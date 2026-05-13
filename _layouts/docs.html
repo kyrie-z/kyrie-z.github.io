@@ -141,6 +141,16 @@
     <!-- 章节导航遮罩 -->
     <div class="section-nav-overlay" id="sectionNavOverlay"></div>
 
+    <!-- 图片放大灯箱 -->
+    <div class="image-lightbox" id="imageLightbox">
+      <div class="lightbox-overlay"></div>
+      <div class="lightbox-content">
+        <img src="" alt="" id="lightboxImg">
+        <div id="lightboxSvg" style="display:none;"></div>
+        <button class="lightbox-close" aria-label="关闭">×</button>
+      </div>
+    </div>
+
     <script>
     // DOMContentLoaded: 页面 HTML 加载完成后执行
     // 确保所有 DOM 元素都已存在，可以安全地操作它们
@@ -156,8 +166,9 @@
         pre.className = 'mermaid';          // 添加 mermaid 类名
         pre.innerHTML = code.textContent;   // 用代码内容替换整个 pre 的内容
       });
+      // 运行 Mermaid，将代码转换为图表
       if (window.mermaid) {
-        mermaid.run();  // 运行 Mermaid，将代码转换为图表
+        mermaid.run({ querySelector: '.mermaid' });
       }
 
       // ============================================
@@ -537,6 +548,90 @@
           ]
         });
       }
+
+      // ============================================
+      // 图片和 Mermaid 图表点击放大
+      // ============================================
+      var lightbox = document.getElementById('imageLightbox');
+      var lightboxImg = document.getElementById('lightboxImg');
+      var lightboxSvg = document.getElementById('lightboxSvg');
+      var lightboxOverlay = lightbox.querySelector('.lightbox-overlay');
+      var lightboxClose = lightbox.querySelector('.lightbox-close');
+
+      // 放到全局作用域
+      window.openLightbox = function(src) {
+        lightboxImg.src = src;
+        lightboxImg.style.display = '';
+        lightboxSvg.style.display = 'none';
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+
+      window.openLightboxSvg = function(svgElement) {
+        lightboxImg.style.display = 'none';
+        lightboxSvg.style.display = '';
+        lightboxSvg.innerHTML = '';
+        var clone = svgElement.cloneNode(true);
+        clone.style.width = '90vw';
+        clone.style.height = '90vh';
+        clone.style.maxWidth = '90vw';
+        clone.style.maxHeight = '90vh';
+        lightboxSvg.appendChild(clone);
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+
+      window.closeLightbox = function() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+      };
+
+      // 点击遮罩或关闭按钮关闭
+      lightboxOverlay.addEventListener('click', window.closeLightbox);
+      lightboxClose.addEventListener('click', window.closeLightbox);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') window.closeLightbox();
+      });
+
+      // 为所有图片添加点击放大
+      document.querySelectorAll('.post-content img').forEach(function(img) {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function() {
+          openLightbox(this.src);
+        });
+      });
+
+      // Mermaid 图表点击放大功能
+      function addMermaidClickHandler() {
+        var mermaidSvgs = document.querySelectorAll('.mermaid svg');
+        mermaidSvgs.forEach(function(svg) {
+          if (svg.dataset.zoomAdded) return;
+          svg.dataset.zoomAdded = 'true';
+          svg.style.cursor = 'zoom-in';
+          svg.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.openLightboxSvg(this);
+          });
+        });
+      }
+
+      // mermaid.run() 完成后执行回调
+      if (window.mermaid) {
+        mermaid.run({ querySelector: '.mermaid' }).then(function() {
+          setTimeout(addMermaidClickHandler, 100);
+        }).catch(function(err) {
+          console.error('Mermaid render error:', err);
+        });
+      }
+
+      // 备用：定时检查
+      var checkCount = 0;
+      var checkInterval = setInterval(function() {
+        checkCount++;
+        addMermaidClickHandler();
+        if (checkCount >= 10) clearInterval(checkInterval);
+      }, 1000);
     });
     </script>
 

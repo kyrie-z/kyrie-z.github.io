@@ -59,45 +59,39 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
 .site-header {
   .header-wrapper {
-    // display: flex: 弹性布局，让子元素水平排列
-    // 默认情况下 flex 子元素会水平排成一行
     display: flex;
-    // align-items: center: 垂直居中对齐
     align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
   }
 
   .site-title {
-    // flex-shrink: 0: 不允许收缩
-    // 当空间不够时，这个元素不会被压缩
     flex-shrink: 0;
   }
 
   .mobile-menu-btn {
-    margin-right: 8px;  // 右边距，和站点标题分开一点
-    flex-shrink: 0;    // 不允许收缩
+    margin-right: 8px;
+    flex-shrink: 0;
   }
 
   .header-nav {
     display: flex;
     align-items: center;
-    // margin-left: auto: 自动占据左侧所有剩余空间
-    // 这样导航链接会被推到右边
     margin-left: auto;
 
     .header-link {
-      padding: 8px 16px;    // 内边距：上下8px，左右16px
-      color: #555;          // 文字颜色（灰色）
-      text-decoration: none; // 去掉下划线
+      padding: 8px 16px;
+      color: #555;
+      text-decoration: none;
       font-size: 16px;
-      border-radius: 4px;   // 圆角
-      // transition: 过渡动画，all 表示所有属性，0.15s 持续时间，ease 缓动函数
+      border-radius: 4px;
       transition: all 0.15s ease;
 
-      // &:hover: 鼠标悬停时的样式
-      // & 在 SCSS 中表示父选择器，这里就是 .header-link
       &:hover {
-        background-color: #f0f4f8;  // 浅蓝灰背景
-        color: #1976D2;              // 蓝色文字
+        background-color: #f0f4f8;
+        color: #1976D2;
       }
     }
   }
@@ -147,25 +141,24 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
       .nav-section-title {
         display: flex;
         align-items: center;
-        padding: 8px 12px;
+        padding: 6px 12px;
         margin-bottom: 0;
-        font-size: 17px;
-        font-weight: 600;   // 字重，600是半粗体
+        font-size: 15px;
+        font-weight: 600;
         color: #333;
         border-radius: 8px;
-        cursor: pointer;     // 鼠标变成手型
-        user-select: none;   // 禁止选中文本
+        cursor: pointer;
+        user-select: none;
         transition: background-color 0.15s ease;
 
         &:hover {
-          // rgba: 红绿蓝+透明度，0.04 是很淡的黑色
           background-color: rgba(0, 0, 0, 0.04);
         }
 
         .section-toggle {
-          margin-right: 8px;
-          transition: transform 0.2s ease;  // transform 变换动画
-          opacity: 0.6;  // 透明度，0.6 表示60%不透明
+          margin-right: 6px;
+          transition: transform 0.2s ease;
+          opacity: 0.6;
         }
       }
 
@@ -173,12 +166,10 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
       .nav-section.collapsed {
         .nav-section-list,
         .nav-submenu {
-          display: none;  // 隐藏子元素
+          display: none;
         }
 
         .section-toggle {
-          // transform: rotate(): 旋转元素
-          // -90deg 表示逆时针旋转90度
           transform: rotate(-90deg);
         }
       }
@@ -186,17 +177,17 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
       // 子菜单（三级目录）
       .nav-submenu {
         margin-bottom: 0 !important;
-        padding-left: 24px;  // 缩进，表示层级关系
+        padding-left: 20px;
       }
 
       .nav-submenu-title {
         display: flex;
         align-items: center;
-        padding: 6px 12px 6px 0;
+        padding: 5px 12px 5px 0;
         margin-bottom: 0;
-        font-size: 16px;
-        font-weight: 500;
-        color: #666;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
         border-radius: 6px;
         cursor: pointer;
         user-select: none;
@@ -225,26 +216,26 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
       // 导航链接列表
       .nav-section-list {
-        list-style: none;  // 去掉列表圆点
-        padding: 2px 0 0 24px;  // 上右下左
+        list-style: none;
+        padding: 1px 0 0 20px;
         margin: 0;
       }
 
       li {
-        margin-bottom: 1px;
+        margin-bottom: 0;
 
         &:last-child {
-          margin-bottom: 0;  // 最后一个元素不需要下边距
+          margin-bottom: 0;
         }
       }
 
       a {
-        display: block;    // 块级元素，占满整行
-        padding: 6px 12px 6px 8px;
+        display: block;
+        padding: 4px 10px 4px 6px;
         color: #555;
         text-decoration: none;
         border-radius: 6px;
-        font-size: 16px;
+        font-size: 13px;
         transition: all 0.15s ease;
 
         &:hover {
@@ -266,7 +257,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
       }
 
       .nav-submenu .nav-section-list a {
-        font-size: 16px;
+        font-size: 13px;
       }
     }
   }
@@ -280,119 +271,118 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
     flex-grow: 1;             // 允许放大
 
     .post-header {
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #eee;  // 下边框作为分隔线
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
 
       .post-title {
-        font-size: 36px;
-        margin-bottom: 10px;
+        font-size: 30px;
+        margin-bottom: 4px;
         color: #1a1a1a;
       }
 
       .post-meta {
-        color: #888;  // 元信息用浅色
-        font-size: 16px;
+        color: #888;
+        font-size: 14px;
       }
     }
 
     // 文章正文样式
     .post-content {
       font-size: 18px;
-      line-height: 1.8;
+      line-height: 1.7;
 
       // 各级标题样式
       h2 {
-        margin-top: 48px;
-        margin-bottom: 16px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #1976D2;  // 蓝色下划线
-        font-size: 28px;
+        margin-top: 32px;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #1976D2;
+        font-size: 24px;
         color: #1a1a1a;
       }
 
       h3 {
-        margin-top: 36px;
-        margin-bottom: 12px;
-        font-size: 22px;
+        margin-top: 24px;
+        margin-bottom: 10px;
+        font-size: 20px;
         color: #333;
       }
 
       h4 {
-        margin-top: 28px;
-        margin-bottom: 10px;
-        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        font-size: 17px;
         color: #444;
       }
 
       p {
-        margin-bottom: 16px;
+        margin-bottom: 12px;
       }
 
       // 图片样式
       img {
-        max-width: 90%;      // 最大宽度90%，比正文窄一点
-        height: auto;        // 高度自动，保持宽高比
-        border-radius: 4px;  // 圆角
-        margin: 16px auto;   // 上下边距16px，左右auto实现水平居中
-        display: block;      // 块级元素才能用 margin: auto 居中
+        max-width: 90%;
+        height: auto;
+        border-radius: 4px;
+        margin: 12px auto;
+        display: block;
       }
 
       // 表格样式
       table {
         width: 100%;
-        border-collapse: collapse;  // 边框合并
-        margin: 20px 0;
+        border-collapse: collapse;
+        margin: 12px 0;
 
         th, td {
           border: 1px solid #ddd;
-          padding: 10px 12px;
+          padding: 8px 10px;
           text-align: left;
         }
 
         th {
-          background-color: #f5f5f5;  // 表头背景色
+          background-color: #f5f5f5;
           font-weight: 600;
         }
 
-        // 斑马纹效果：偶数行不同背景色
         tr:nth-child(even) {
           background-color: #fafafa;
         }
       }
 
       ul, ol {
-        margin-bottom: 16px;
-        padding-left: 24px;  // 列表缩进
+        margin-bottom: 12px;
+        padding-left: 20px;
       }
 
       li {
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
 
-      // 行内代码样式（`code` 这种）
+      // 行内代码样式
       code {
-        background-color: #f5f5f5;  // 浅灰背景
-        padding: 2px 6px;           // 小内边距
-        border-radius: 3px;         // 小圆角
-        font-size: 0.9em;           // 稍微小一点
+        background-color: #f5f5f5;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-size: 0.9em;
         font-family: 'LXGW WenKai Mono', 'Consolas', 'Monaco', monospace;
       }
 
-      // 代码块样式（```code``` 这种）
+      // 代码块样式
       pre {
-        background-color: #fffbeb !important;  // 浅黄背景
+        background-color: #fffbeb !important;
         color: #24292f;
-        padding: 16px;
+        padding: 12px;
         border-radius: 6px;
-        overflow-x: auto;     // 横向滚动（代码太长时）
-        margin: 20px auto;    // 居中显示
-        max-width: 90%;       // 比正文窄
-        box-sizing: border-box;  // padding 包含在宽度内
-        position: relative;   // 为复制按钮定位做准备
+        overflow-x: auto;
+        margin: 12px auto;
+        max-width: 90%;
+        box-sizing: border-box;
+        position: relative;
 
         code {
-          background: none;   // 重置行内代码的背景
+          background: none;
           border: none;
           padding: 0;
           color: inherit;     // 继承 pre 的颜色
@@ -444,9 +434,9 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
       // 引用块样式
       blockquote {
-        border-left: 4px solid #1976D2;  // 左边蓝色竖线
-        padding: 12px 20px;
-        margin: 20px 0;
+        border-left: 4px solid #1976D2;
+        padding: 8px 16px;
+        margin: 12px 0;
         background-color: #f8f9fa;
         color: #555;
       }
@@ -455,9 +445,9 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
   // 右侧目录
   .docs-toc {
-    width: 15%;               // 使用百分比
-    min-width: 150px;         // 最小宽度
-    max-width: 220px;         // 最大宽度
+    width: 15%;
+    min-width: 150px;
+    max-width: 220px;
     flex-shrink: 0;
 
     .docs-toc-inner {
@@ -472,10 +462,10 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
     .toc-nav {
       h3 {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 600;
         color: #666;
-        margin: 0 0 12px 0;
+        margin: 0 0 10px 0;
         padding: 0;
       }
 
@@ -490,7 +480,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
           a {
             color: #666;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 14px;
             display: block;
             padding: 0 10px;
             border-radius: 6px;
@@ -511,7 +501,7 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
           // h3 级别的目录项，缩进20px
           &.h3 {
             a {
-              font-size: 16px;
+              font-size: 14px;
               color: #777;
               padding: 0 10px 0 20px;
             }
@@ -981,13 +971,283 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 }
 
 // ============================================
-// 首页文章列表样式
+// 图片放大灯箱样式
 // ============================================
 
+.image-lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+
+  &.open {
+    display: flex;
+  }
+
+  .lightbox-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    cursor: zoom-out;
+  }
+
+  .lightbox-content {
+    position: relative;
+    max-width: 95vw;
+    max-height: 95vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-width: 95vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    svg {
+      max-width: 90vw;
+      max-height: 90vh;
+      background: #fffbeb;
+      border-radius: 4px;
+    }
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// ============================================
+// 首页文章列表样式（横向卡片式）
+// ============================================
+
+// 首页覆盖 wrapper 宽度限制
+.home .page-content .wrapper {
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+// page 布局（如 about 页面）宽度与首页一致
+.page-content .wrapper {
+  max-width: 1400px !important;
+  padding: 30px 40px !important;
+  box-sizing: border-box;
+}
+
+// page 布局内容样式
+.page-content {
+  h1, h2, h3 {
+    color: #1a1a1a;
+  }
+
+  h2 {
+    font-size: 26px;
+    margin-top: 30px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 17px;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  a {
+    color: #667eea;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.home-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 40px 60px;
+}
+
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+
+  .tag-btn {
+    padding: 6px 16px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    border-radius: 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #555;
+    font-family: inherit;
+
+    &:hover {
+      border-color: #667eea;
+      color: #667eea;
+    }
+
+    &.active {
+      background: #667eea;
+      color: #fff;
+      border-color: #667eea;
+    }
+  }
+}
+
+.post-list-new {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.post-card-horizontal {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.1);
+  }
+
+  .post-card-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 24px;
+    text-decoration: none !important;
+    color: inherit;
+    gap: 20px;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+
+  .post-card-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .post-card-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+    text-decoration: none !important;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+
+  .post-card-excerpt {
+    font-size: 17px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .post-card-side {
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 120px;
+  }
+
+  .post-card-date {
+    font-size: 15px;
+    color: #999;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .post-card-tags {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .post-tag {
+    padding: 3px 10px;
+    background: #f0f4f8;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #667eea;
+  }
+}
+
+.no-posts {
+  text-align: center;
+  color: #999;
+  padding: 60px 20px;
+  font-size: 18px;
+}
+
+// 响应式
+@media screen and (max-width: 768px) {
+  .home-container {
+    padding: 20px 16px 40px;
+  }
+
+  .home-header .home-title {
+    font-size: 26px;
+  }
+
+  .post-card-horizontal .post-card-link {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .post-card-horizontal .post-card-side {
+    text-align: left;
+    margin-top: 12px;
+  }
+
+  .post-card-horizontal .post-card-tags {
+    justify-content: flex-start;
+  }
+}
+
+// 旧版首页样式（保留兼容）
 .home {
   .post-list {
     max-width: 800px;
-    margin: 0 auto;  // 居中
+    margin: 0 auto;
 
     li {
       padding: 8px 0;

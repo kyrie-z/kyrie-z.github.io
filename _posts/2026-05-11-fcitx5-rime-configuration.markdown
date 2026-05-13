@@ -1,12 +1,13 @@
 ---
 layout: post
-title:  "fcitx5-rime + 雾凇拼音 + 万象语言大模型配置指南"
+title:  "fcitx5-rime 输入法配置"
 date:   2026-05-11 21:00:00 +0800
 categories: linux input-method
 tags: [wayland, gnome, debian, fcitx, rime]
 slug: fcitx5-rime雾凇拼音
-nav_category: Linux 配置
-nav_order: 3
+nav_category: Linux
+nav_subcategory: 桌面与应用
+nav_order: 1
 ---
 
 ## 前言：Rime 输入法简介

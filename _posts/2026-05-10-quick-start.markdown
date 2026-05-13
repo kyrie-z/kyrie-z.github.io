@@ -4,7 +4,8 @@ title: "快速入门指南"
 date: 2026-05-10
 categories: tutorial
 slug: quick-start
-nav_category: 入门指南
+nav_category: 博客搭建
+nav_subcategory: 入门指南
 nav_order: 1
 ---
 

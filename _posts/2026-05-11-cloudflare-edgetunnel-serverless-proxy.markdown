@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Cloudflare + edgetunnel 搭建 Serverless 代理节点"
+title: "Cloudflare 代理节点搭建"
 date: 2026-05-11
 categories: [Linux, 网络]
 tags: [VPN, 翻墙, 域名, IP, Cloudflare]
-nav_category: linux 网络
-nav_order: 3
+nav_category: 网络
+nav_order: 1
 ---
 
 > 使用 Cloudflare Pages 部署 `edgetunnel` 搭建代理节点的方案，是近年来非常流行的一种 **Serverless（无服务器）** 翻墙技术。
