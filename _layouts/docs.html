@@ -157,6 +157,56 @@
     document.addEventListener('DOMContentLoaded', function() {
 
       // ============================================
+      // 左侧侧边栏默认只展开当前文档所在分类
+      // ============================================
+      var docsNav = document.querySelector('.docs-nav');
+      if (docsNav) {
+        var activeLink = docsNav.querySelector('a.active');
+        var allSections = docsNav.querySelectorAll('.nav-section');
+
+        // 先收起所有分类（包括箭头状态）
+        allSections.forEach(function(section) {
+          section.classList.add('collapsed');
+          var sectionToggle = section.querySelector('.nav-section-title .section-toggle');
+          if (sectionToggle) {
+            sectionToggle.style.transform = 'rotate(-90deg)';
+          }
+          // 收起所有二级分类
+          section.querySelectorAll('.nav-submenu').forEach(function(submenu) {
+            submenu.classList.add('collapsed');
+            var submenuToggle = submenu.querySelector('.nav-submenu-title .section-toggle');
+            if (submenuToggle) {
+              submenuToggle.style.transform = 'rotate(-90deg)';
+            }
+          });
+        });
+
+        // 如果有当前激活的链接，展开其所在的分类
+        if (activeLink) {
+          var parentSection = activeLink.closest('.nav-section');
+          var parentSubmenu = activeLink.closest('.nav-submenu');
+
+          // 展开一级分类
+          if (parentSection) {
+            parentSection.classList.remove('collapsed');
+            var sectionToggle = parentSection.querySelector('.nav-section-title .section-toggle');
+            if (sectionToggle) {
+              sectionToggle.style.transform = 'rotate(0deg)';
+            }
+          }
+
+          // 展开二级分类（如果有）
+          if (parentSubmenu) {
+            parentSubmenu.classList.remove('collapsed');
+            var submenuToggle = parentSubmenu.querySelector('.nav-submenu-title .section-toggle');
+            if (submenuToggle) {
+              submenuToggle.style.transform = 'rotate(0deg)';
+            }
+          }
+        }
+      }
+
+      // ============================================
       // 处理 Mermaid 图表
       // ============================================
       // Mermaid 是一个用文本代码绘制图表的库
@@ -374,6 +424,11 @@
         title.addEventListener('click', function() {
           var section = this.parentElement;
           section.classList.toggle('collapsed');
+          // 切换箭头方向
+          var toggle = this.querySelector('.section-toggle');
+          if (toggle) {
+            toggle.style.transform = section.classList.contains('collapsed') ? 'rotate(-90deg)' : 'rotate(0deg)';
+          }
         });
       });
 
