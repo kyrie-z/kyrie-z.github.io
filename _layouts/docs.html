@@ -297,22 +297,54 @@
         // 点击目录标题可以展开/收起子列表
         mobileMenu.querySelectorAll('.mobile-nav-title').forEach(function(title) {
           title.addEventListener('click', function() {
-            // nextElementSibling: 下一个兄弟元素
-            var list = this.nextElementSibling;
+            var parent = this.parentElement;
             var toggle = this.querySelector('.section-toggle');
-            if (list && list.classList.contains('mobile-nav-list')) {
-              list.classList.toggle('open');
-            }
-            // 根据展开状态旋转箭头
-            if (toggle) {
-              toggle.style.transform = list && list.classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+
+            // 查找直接的 mobile-nav-list（无二级分类的情况）
+            var directList = parent.querySelector(':scope > .mobile-nav-list');
+
+            // 查找所有 mobile-nav-submenu（有二级分类的情况）
+            var submenus = parent.querySelectorAll(':scope > .mobile-nav-submenu');
+
+            // 判断当前是否展开
+            var isExpanded = (directList && directList.classList.contains('open')) ||
+                             (submenus.length > 0 && submenus[0].classList.contains('open'));
+
+            if (isExpanded) {
+              // 收起
+              if (directList) directList.classList.remove('open');
+              submenus.forEach(function(submenu) {
+                submenu.classList.remove('open');
+                // 同时收起二级列表
+                var innerList = submenu.querySelector('.mobile-nav-list');
+                if (innerList) innerList.classList.remove('open');
+              });
+              if (toggle) toggle.style.transform = 'rotate(-90deg)';
+            } else {
+              // 展开
+              if (directList) directList.classList.add('open');
+              submenus.forEach(function(submenu) {
+                submenu.classList.add('open');
+                // 同时展开二级列表
+                var innerList = submenu.querySelector('.mobile-nav-list');
+                if (innerList) innerList.classList.add('open');
+              });
+              if (toggle) toggle.style.transform = 'rotate(0deg)';
             }
           });
         });
 
         // 移动端三级目录折叠
         mobileMenu.querySelectorAll('.mobile-nav-submenu-title').forEach(function(title) {
-          title.addEventListener('click', function() {
+          var list = title.nextElementSibling;
+          var toggle = title.querySelector('.section-toggle');
+          // 初始状态：箭头朝下（因为列表默认跟随父级展开）
+          if (toggle && list && list.classList.contains('open')) {
+            toggle.style.transform = 'rotate(0deg)';
+          }
+
+          title.addEventListener('click', function(e) {
+            e.stopPropagation();
             var list = this.nextElementSibling;
             var toggle = this.querySelector('.section-toggle');
             if (list && list.classList.contains('mobile-nav-list')) {

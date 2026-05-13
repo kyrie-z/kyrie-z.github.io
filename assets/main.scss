@@ -109,8 +109,8 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
     width: 100%;                // 占满宽度
     max-width: 100%;            // 无最大宽度限制
     margin: 0 auto;             // 水平居中（左右 auto）
-    padding: 30px 2%;           // 使用百分比内边距
-    gap: 2%;                    // 使用百分比间距
+    padding: 30px 3%;           // 使用百分比内边距
+    gap: 3%;                    // 使用百分比间距
     position: relative;
     box-sizing: border-box;
   }
@@ -510,7 +510,6 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
           // h4 级别的目录项，缩进32px
           &.h4 {
             a {
-              font-size: 16px;
               color: #888;
               padding: 0 10px 0 32px;
             }
@@ -684,13 +683,18 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
     .mobile-nav-submenu {
       margin-bottom: 0;
+      display: none;
+
+      &.open {
+        display: block;
+      }
 
       .mobile-nav-submenu-title {
         display: flex;
         align-items: center;
         padding: 6px 10px 6px 16px;
         margin-bottom: 0;
-        font-size: 14px;      // 二级目录，居中
+        font-size: 14px;
         font-weight: 500;
         color: #666;
         border-radius: 0;
@@ -711,6 +715,11 @@ html, body, p, h1, h2, h3, h4, h5, h6, div, span, a, li, td, th, article, sectio
 
       .mobile-nav-list {
         padding-left: 20px;
+        display: none;
+
+        &.open {
+          display: block;
+        }
       }
     }
   }
