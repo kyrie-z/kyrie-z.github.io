@@ -3,7 +3,7 @@ layout: post
 title:  "LLM 缓存与 TTL"
 date:   2026-05-11 21:15:00 +0800
 categories: ai llm
-tags: [llm, cache, claude, prompt-caching]
+tags: [llm, cache]
 nav_category: AI
 nav_order: 1
 ---

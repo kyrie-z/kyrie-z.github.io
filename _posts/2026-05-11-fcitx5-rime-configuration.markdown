@@ -3,7 +3,7 @@ layout: post
 title:  "fcitx5-rime 输入法配置"
 date:   2026-05-11 21:00:00 +0800
 categories: linux input-method
-tags: [wayland, gnome, debian, fcitx, rime]
+tags: [linux, fcitx, rime]
 slug: fcitx5-rime雾凇拼音
 nav_category: Linux
 nav_subcategory: 桌面与应用

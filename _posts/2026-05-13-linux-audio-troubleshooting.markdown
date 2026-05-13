@@ -3,7 +3,7 @@ layout: post
 title:  "Linux 音频排查"
 date:   2026-05-13 21:30:00 +0800
 categories: linux desktop
-tags: [linux, audio, pipewire, wireplumber, alsa, troubleshooting]
+tags: [linux, security, pipewire, audio]
 nav_category: Linux
 nav_subcategory: 桌面与应用
 nav_order: 2

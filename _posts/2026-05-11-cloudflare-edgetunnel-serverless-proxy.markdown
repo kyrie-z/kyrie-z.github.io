@@ -3,7 +3,7 @@ layout: post
 title: "Cloudflare 代理节点搭建"
 date: 2026-05-11
 categories: [Linux, 网络]
-tags: [VPN, 翻墙, 域名, IP, Cloudflare]
+tags: [Cloudflare, VPN]
 nav_category: 网络
 nav_order: 1
 ---

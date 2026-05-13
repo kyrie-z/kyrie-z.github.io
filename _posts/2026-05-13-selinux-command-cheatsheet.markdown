@@ -3,7 +3,7 @@ layout: post
 title:  "SELinux 工具速查手册"
 date:   2026-05-13 21:00:00 +0800
 categories: linux security
-tags: [linux, selinux, security, mac]
+tags: [linux, selinux]
 nav_category: Linux
 nav_subcategory: 系统与安全
 nav_order: 1

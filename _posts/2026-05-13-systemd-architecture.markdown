@@ -3,7 +3,7 @@ layout: post
 title:  "Systemd 架构分析"
 date:   2026-05-13 22:00:00 +0800
 categories: linux kernel
-tags: [linux, systemd, architecture, pid1, cgroup]
+tags: [linux, systemd]
 nav_category: Linux
 nav_subcategory: 系统与安全
 nav_order: 2
